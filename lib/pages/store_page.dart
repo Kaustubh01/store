@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:store/components/custom_card.dart';
 import 'package:store/components/custom_grid.dart';
-import 'package:store/components/custom_list_view.dart';
+import 'package:store/components/custom_product_card_list_view.dart';
+import 'package:store/models/inventory_model.dart';
+import 'package:store/pages/cart_page.dart';
 import 'package:store/pages/inventory_management_page.dart'; // Import your InventoryPage
 
 class StorePage extends StatelessWidget {
@@ -11,7 +14,20 @@ class StorePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Store"),
+        title: const Center(child: Text("Store")),
+        actions: [
+          IconButton(
+            onPressed: (){
+                        Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CartScreen(),
+                          ),
+                        );
+            }, 
+            icon: const Icon(Icons.shopping_cart)
+          )
+        ],
+        
       ),
       body: Column(
         children: [
@@ -29,20 +45,18 @@ class StorePage extends StatelessWidget {
                 }
 
                 final newArrivals = snapshot.data!.docs
-                    .map((doc) => doc.data() as Map<String, dynamic>)
+                    .map((doc) => InventoryItem.fromFirestore(doc))
                     .toList();
 
-                return CustomListView(
+                return CustomProductCardListView(
                   title: "NEW ARRIVALS",
                   items: newArrivals.map((item) {
-                    return Card(
-                      child: Column(
-                        children: [
-                          Image.network(item['imageUrl']),
-                          Text(item['name']),
-                          Text("\$${item['price'].toStringAsFixed(2)}"),
-                        ],
-                      ),
+                   return ProductCard(
+                      title: item.name,
+                      imageUrl: item.imageUrl,
+                      price: item.price,
+                      description: item.description,
+                      productId: item.id, // Use item.id here
                     );
                   }).toList(),
                 );
@@ -64,20 +78,18 @@ class StorePage extends StatelessWidget {
                 }
 
                 final trendingItems = snapshot.data!.docs
-                    .map((doc) => doc.data() as Map<String, dynamic>)
+                    .map((doc) => InventoryItem.fromFirestore(doc))
                     .toList();
 
-                return CustomListView(
+                return CustomProductCardListView(
                   title: "Trending",
                   items: trendingItems.map((item) {
-                    return Card(
-                      child: Column(
-                        children: [
-                          Image.network(item['imageUrl']),
-                          Text(item['name']),
-                          Text("\$${item['price'].toStringAsFixed(2)}"),
-                        ],
-                      ),
+                    return ProductCard(
+                      title: item.name,
+                      imageUrl: item.imageUrl,
+                      price: item.price,
+                      description: item.description,
+                      productId: item.id, // Use item.id here
                     );
                   }).toList(),
                 );
@@ -92,14 +104,14 @@ class StorePage extends StatelessWidget {
           ),
 
           ElevatedButton(
-              onPressed: () {
-                // Navigate to InventoryPage
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => InventoryPage()),
-                );
-              },
-              child: const Text("Go to Inventory Management"),
-            ),
+            onPressed: () {
+              // Navigate to InventoryPage
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => InventoryPage()),
+              );
+            },
+            child: const Text("Go to Inventory Management"),
+          ),
         ],
       ),
     );
