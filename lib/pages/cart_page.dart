@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:store/bloc/cart_bloc.dart';
-import 'package:store/bloc/cart_event.dart';
-import 'package:store/bloc/cart_state.dart';
+import 'package:store/bloc/cart/cart_bloc.dart';
+import 'package:store/bloc/cart/cart_event.dart';
+import 'package:store/bloc/cart/cart_state.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});

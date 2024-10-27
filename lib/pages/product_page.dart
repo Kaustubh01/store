@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:store/bloc/cart_bloc.dart';
-import 'package:store/bloc/cart_event.dart';
+import 'package:store/bloc/cart/cart_bloc.dart';
+import 'package:store/bloc/cart/cart_event.dart';
 import 'package:store/models/inventory_model.dart';
 
 class ProductPage extends StatelessWidget {
